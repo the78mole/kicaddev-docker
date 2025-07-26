@@ -20,7 +20,8 @@ A minimal containerized environment focused on KiCad CLI tools and production ex
 
 - 🔧 **KiCad 9.0 CLI** - Command-line tools for automated PCB workflows
 - 📊 **PCB Automation** - KiKit, PCBDraw for manufacturing outputs
-- 🐍 **Python Extensions** - Essential packages for KiCad automation
+- � **Documentation Tools** - Sphinx, ReadTheDocs integration for professional docs
+- �🐍 **Python Extensions** - Essential packages for KiCad automation
 - 📁 **Production Scripts** - Ready-to-use export scripts for Gerbers, PDFs, and 3D files
 - 🏗️ **CI/CD Ready** - Perfect for automated build pipelines
 - 📦 **Lightweight** - Minimal image size focused on CLI tools only
@@ -44,7 +45,16 @@ A minimal containerized environment focused on KiCad CLI tools and production ex
 | **InteractiveHtmlBom** | Interactive HTML BOM for assembly |
 | **Gerbv** | Gerber file viewing and verification |
 
-### 🐍 Python Ecosystem
+### � Documentation Tools
+| Tool | Purpose |
+|------|---------|
+| **Sphinx** | Professional documentation generation |
+| **MyST Parser** | Markdown and ReStructuredText support |
+| **ReadTheDocs Theme** | Professional documentation theme |
+| **Sphinx AutoBuild** | Live documentation preview |
+| **kicad_docs_build** | Custom KiCad documentation builder |
+
+### �🐍 Python Ecosystem
 | Tool | Purpose |
 |------|---------|
 | **Matplotlib** | Scientific plotting and visualization |
@@ -83,6 +93,10 @@ docker run --rm -v $(pwd):/workspace kicaddev-cli \
 # Generate Interactive HTML BOM
 docker run --rm -v $(pwd):/workspace kicaddev-cli \
   generate_ibom_headless --dest-dir ./bom/ --name-format project_ibom --no-browser project.kicad_pcb
+
+# Build project documentation (Sphinx/ReadTheDocs)
+docker run --rm -v $(pwd):/workspace --user $(id -u):$(id -g) kicaddev-cli \
+  kicad_docs_build .
 ```
 
 ### Interactive Shell
@@ -97,7 +111,9 @@ docker run --rm -it \
 kicad-cli --help              # Show all available CLI commands
 kicad_export project.kicad_pro # Export production files
 generate_ibom_headless --help  # Interactive HTML BOM options
-kicad-help                    # Show quick help
+kicad_docs_build .            # Build Sphinx documentation
+sphinx-build -b html source build/html  # Direct Sphinx build
+sphinx-autobuild source build/html      # Live documentation preview
 ```
 
 ---

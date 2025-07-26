@@ -7,13 +7,6 @@ SPHINXBUILD  ?= sphinx-build
 SOURCEDIR    = source
 BUILDDIR     = build
 
-# Prüfe ob sphinx-build im lokalen bin-Verzeichnis verfügbar ist
-ifneq (,$(wildcard /home/kicad/.local/bin/sphinx-build))
-    SPHINXBUILD = /home/kicad/.local/bin/sphinx-build
-else ifneq (,$(wildcard ~/.local/bin/sphinx-build))
-    SPHINXBUILD = ~/.local/bin/sphinx-build
-endif
-
 # Put it first so that "make" without argument is like "make help".
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

@@ -9,3 +9,10 @@ pcbdraw
 
 # Interactive HTML BOM generator
 InteractiveHtmlBom
+
+# Documentation tools for Sphinx and ReadTheDocs
+sphinx>=5.0
+myst-parser
+sphinx-rtd-theme
+sphinx-autobuild
+sphinxcontrib-napoleon

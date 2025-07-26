@@ -13,13 +13,12 @@ cd "$(dirname "$0")"
 # Prüfen ob Python-Abhängigkeiten installiert sind
 echo "📦 Prüfe Python-Abhängigkeiten..."
 if ! python3 -c "import sphinx, myst_parser, sphinx_rtd_theme" 2>/dev/null; then
-    echo "⚠️  Installiere fehlende Abhängigkeiten..."
-    # Für Docker-Container mit externally-managed environment
-    if [ -n "$CONTAINER" ] || [ -f /.dockerenv ]; then
-        pip3 install --break-system-packages -r source/requirements.txt
-    else
-        pip3 install -r source/requirements.txt
-    fi
+    echo "❌ Sphinx-Abhängigkeiten nicht gefunden!"
+    echo "💡 Bitte den KiCad-Docker-Container verwenden:"
+    echo "   docker run --rm -v \$(pwd):/workspace kicaddev-cli"
+    exit 1
+else
+    echo "✅ Alle Abhängigkeiten gefunden!"
 fi
 
 # Build-Verzeichnis bereinigen
@@ -28,14 +27,7 @@ rm -rf build/
 
 # HTML-Dokumentation erstellen
 echo "🏗️  Erstelle HTML-Dokumentation..."
-# Sphinx-Build aus dem lokalen bin-Verzeichnis nutzen, falls vorhanden
-if [ -f /home/kicad/.local/bin/sphinx-build ]; then
-    /home/kicad/.local/bin/sphinx-build -b html source build/html
-elif [ -f ~/.local/bin/sphinx-build ]; then
-    ~/.local/bin/sphinx-build -b html source build/html
-else
-    sphinx-build -b html source build/html
-fi
+sphinx-build -b html source build/html
 
 # Erfolg melden
 echo "✅ Dokumentation erfolgreich erstellt!"
