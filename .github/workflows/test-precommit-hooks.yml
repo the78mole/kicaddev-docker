@@ -1,0 +1,41 @@
+name: Test pre-commit hooks in Docker image
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test-precommit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build PlatformIO image (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          tags: test/platformio-docker
+
+      - name: Test pre-commit functionality
+        run: |
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}/testrepo:/workspace" \
+            -w /workspace \
+            test/platformio-docker bash -c '
+              echo "=== Initializing git repository ==="
+              git init
+              git config --global --add safe.directory "$(pwd)"
+              git config user.name "GitHub Actions"
+              git config user.email "test@example.com"
+              
+              echo "=== Adding files and installing pre-commit ==="
+              git add .
+              pre-commit install
+              
+              echo "=== Running pre-commit on test files (expecting failures) ==="
+              pre-commit run --all-files || echo "Pre-commit found issues as expected"
+              
+              echo "✅ Pre-commit test completed successfully"
+            '

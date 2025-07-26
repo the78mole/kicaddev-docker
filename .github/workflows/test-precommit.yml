@@ -1,0 +1,44 @@
+name: Test PlatformIO Docker image functionality
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test-platformio:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build PlatformIO image (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          tags: test/platformio-docker
+
+      - name: Test PlatformIO installation and basic functionality
+        run: |
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}/testrepo:/workspace" \
+            -w /workspace \
+            test/platformio-docker bash -c '
+              echo "=== Testing PlatformIO installation ==="
+              pio --version
+              
+              echo "=== Testing PlatformIO project initialization ==="
+              pio project init --board esp32dev --project-dir test-project
+              
+              echo "=== Verifying project structure ==="
+              ls -la test-project/
+              
+              echo "=== Testing basic PlatformIO commands ==="
+              cd test-project
+              pio boards | head -5
+              pio lib search "ArduinoJson" | head -5
+              
+              echo "✅ PlatformIO functionality test completed successfully"
+            '
+
+

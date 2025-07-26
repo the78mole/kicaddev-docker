@@ -1,0 +1,58 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "dependencyDashboard": true,
+  "packageRules": [
+    {
+      "matchManagers": [
+        "dockerfile"
+      ],
+      "matchPackageNames": [
+        "ubuntu"
+      ],
+      "groupName": "Base image updates",
+      "schedule": ["before 6am on monday"]
+    },
+    {
+      "matchManagers": [
+        "pip_requirements"
+      ],
+      "matchPackageNames": [
+        "platformio",
+        "pre-commit", 
+        "esptool"
+      ],
+      "groupName": "PlatformIO dependencies",
+      "schedule": ["before 6am on monday"],
+      "semanticCommits": "enabled",
+      "semanticCommitType": "deps",
+      "semanticCommitScope": "platformio"
+    },
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "groupName": "GitHub Actions",
+      "schedule": ["before 6am on monday"]
+    }
+  ],
+  "dockerfile": {
+    "enabled": true
+  },
+  "pip_requirements": {
+    "enabled": true,
+    "fileMatch": ["(^|/)Dockerfile$"]
+  },
+  "labels": [
+    "dependencies"
+  ],
+  "timezone": "Europe/Berlin",
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 3,
+  "commitMessagePrefix": "chore:",
+  "commitMessageAction": "update",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "to {{newVersion}}"
+}
