@@ -28,6 +28,16 @@
       "semanticCommitScope": "python"
     },
     {
+      "matchPackageNames": [
+        "pillow"
+      ],
+      "matchManagers": [
+        "pip_requirements"
+      ],
+      "allowedVersions": "~9.0",
+      "description": "Keep Pillow at 9.x due to PcbDraw compatibility constraint (Pillow~=9.0)"
+    },
+    {
       "matchManagers": [
         "npm"
       ],
@@ -43,7 +53,7 @@
       "matchManagers": [
         "github-actions"
       ],
-      "groupName": "GitHub Actions",
+      "groupName": "GitHub Actions"
     }
   ],
   "dockerfile": {
