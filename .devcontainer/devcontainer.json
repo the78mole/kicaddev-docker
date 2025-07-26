@@ -1,0 +1,112 @@
+{
+    "name": "KiCad Development Environment",
+    "image": "ghcr.io/the78mole/kicaddev-docker:latest",
+    
+    // Configure tool-specific properties
+    "customizations": {
+        "vscode": {
+            // Extensions for KiCad development
+            "extensions": [
+                "ms-python.python",
+                "ms-python.pylint",
+                "ms-vscode.cpptools",
+                "redhat.vscode-yaml",
+                "yzhang.markdown-all-in-one",
+                "streetsidesoftware.code-spell-checker",
+                "github.vscode-pull-request-github",
+                "eamodio.gitlens",
+                "ms-vscode.vscode-json",
+                "tamasfe.even-better-toml"
+            ],
+            
+            // VS Code settings
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/bin/python3",
+                "python.linting.enabled": true,
+                "python.linting.pylintEnabled": true,
+                "python.formatting.provider": "black",
+                "files.associations": {
+                    "*.kicad_pro": "json",
+                    "*.kicad_sch": "json",
+                    "*.kicad_pcb": "json",
+                    "*.kicad_sym": "json",
+                    "*.kicad_mod": "json"
+                },
+                "files.exclude": {
+                    "**/__pycache__": true,
+                    "**/*.pyc": true,
+                    "**/build": true,
+                    "**/.git": false
+                },
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "terminal.integrated.profiles.linux": {
+                    "bash": {
+                        "path": "/bin/bash",
+                        "args": ["-l"]
+                    }
+                }
+            }
+        }
+    },
+    
+    // Forward ports for web-based documentation viewing
+    "forwardPorts": [8000, 8080, 3000],
+    "portsAttributes": {
+        "8000": {
+            "label": "Sphinx Live Server",
+            "onAutoForward": "notify"
+        },
+        "8080": {
+            "label": "Documentation Server",
+            "onAutoForward": "silent"
+        }
+    },
+    
+    // Set workspace configuration
+    "workspaceFolder": "/workspace",
+    
+    // Run as the kicad user (non-root) for security
+    "remoteUser": "kicad",
+    "containerUser": "kicad",
+    
+    // Configure user environment
+    "remoteEnv": {
+        "PATH": "/usr/local/bin:${containerEnv:PATH}"
+    },
+    
+    // Features to add additional development tools
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {
+            "version": "latest",
+            "ppa": false
+        },
+        "ghcr.io/devcontainers/features/github-cli:1": {
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "version": "latest",
+            "dockerDashComposeVersion": "v2"
+        }
+    },
+    
+    // Lifecycle scripts
+    "postCreateCommand": "echo 'KiCad Dev Container ready! Use kicad-help to see available commands.'",
+    "postStartCommand": "git config --global --add safe.directory /workspace",
+    
+    // Development container capabilities
+    "capAdd": ["SYS_PTRACE"],
+    "securityOpt": ["seccomp=unconfined"],
+    
+    // Mount additional volumes if needed
+    "mounts": [
+        // Mount for persistent bash history
+        "source=kicad-bashhistory,target=/home/kicad/.bash_history,type=volume"
+    ],
+    
+    // Container arguments for better development experience
+    "runArgs": [
+        "--init",
+        "--privileged=false",
+        "--security-opt=no-new-privileges"
+    ]
+}

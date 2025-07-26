@@ -1,6 +1,6 @@
 # 🔧 KiCad CLI Tools & Production Extensions
 
-> **Lightweight Docker image for KiCad command-line tools and PCB production automation**
+> **Docker image for KiCad command-line tools and PCB production automation**
 
 A minimal containerized environment focused on KiCad CLI tools and production extensions for automated PCB manufacturing workflows. Built on Ubuntu 24.04 with KiCad 9.0 CLI tools and essential Python packages for PCB automation.
 
@@ -15,6 +15,96 @@ A minimal containerized environment focused on KiCad CLI tools and production ex
 [![GitHub Downloads](https://img.shields.io/github/downloads/the78mole/kicaddev-docker/total?label=Downloads&color=blue)](https://github.com/the78mole/kicaddev-docker/releases)
 
 ---
+## 🚀 Development Container (VS Code)
+
+You can use this Docker image as a development container in Visual Studio Code for a complete KiCad development environment. Create a `.devcontainer` folder in your project root with the following `devcontainer.json` configuration:
+
+```json
+{
+    "name": "KiCad Development Environment",
+    "image": "ghcr.io/the78mole/kicaddev-docker:latest",
+    
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.pylint",
+                "redhat.vscode-yaml",
+                "yzhang.markdown-all-in-one",
+                "streetsidesoftware.code-spell-checker",
+                "eamodio.gitlens"
+            ],
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/bin/python3",
+                "python.linting.enabled": true,
+                "files.associations": {
+                    "*.kicad_pro": "json",
+                    "*.kicad_sch": "json",
+                    "*.kicad_pcb": "json"
+                },
+                "terminal.integrated.defaultProfile.linux": "bash"
+            }
+        }
+    },
+    
+    "forwardPorts": [8000, 8080],
+    "portsAttributes": {
+        "8000": {
+            "label": "Sphinx Live Server",
+            "onAutoForward": "notify"
+        }
+    },
+    
+    "workspaceFolder": "/workspace",
+    "remoteUser": "kicad",
+    
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
+    
+    "postCreateCommand": "echo 'KiCad Dev Container ready! Use kicad-help to see available commands.'",
+    "postStartCommand": "git config --global --add safe.directory /workspace"
+}
+```
+
+### 🔧 Dev Container Features
+
+- **Complete KiCad CLI Environment** - All KiCad 9.0 command-line tools ready to use
+- **Documentation Tools** - Sphinx, MyST Parser, and ReadTheDocs theme for professional docs
+- **Python Development** - Full Python environment with KiCad automation libraries
+- **Port Forwarding** - Automatic forwarding for Sphinx live preview (port 8000)
+- **VS Code Integration** - Pre-configured extensions and settings for KiCad development
+- **Git Integration** - GitHub CLI and Git pre-configured
+- **Non-root User** - Runs as `kicad` user for proper file permissions
+
+### 🎯 Quick Start with Dev Container
+
+1. **Install VS Code Extensions**:
+   - [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+2. **Create Dev Container Configuration**:
+   ```bash
+   mkdir .devcontainer
+   # Copy the devcontainer.json above into .devcontainer/devcontainer.json
+   ```
+
+3. **Open in Container**:
+   - Open your KiCad project in VS Code
+   - Press `Ctrl+Shift+P` → "Dev Containers: Reopen in Container"
+   - VS Code will pull the image and start the container
+
+4. **Start Developing**:
+   ```bash
+   # Initialize documentation structure
+   kicad_docs_init .
+   
+   # Generate production files  
+   kicad_export my-project.kicad_pro
+   
+   # Start live documentation preview
+   cd docs && sphinx-autobuild source build/html
+   ```
 
 ## ✨ Features
 
