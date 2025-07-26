@@ -4,6 +4,8 @@
     "config:recommended"
   ],
   "dependencyDashboard": true,
+  "dependencyDashboardTitle": "🔧 KiCad Development Dependencies",
+  "schedule": ["before 6am on monday"],
   "packageRules": [
     {
       "matchManagers": [
@@ -13,29 +15,40 @@
         "ubuntu"
       ],
       "groupName": "Base image updates",
-      "schedule": ["before 6am on monday"]
+      "prTitle": "🐳 Update {{groupName}}"
     },
     {
       "matchManagers": [
         "pip_requirements"
       ],
-      "matchPackageNames": [
-        "platformio",
-        "pre-commit", 
-        "esptool"
+      "matchFileNames": [
+        "requirements.txt"
       ],
-      "groupName": "PlatformIO dependencies",
-      "schedule": ["before 6am on monday"],
+      "groupName": "Python dependencies",
+      "prTitle": "🐍 Update {{groupName}}",
       "semanticCommits": "enabled",
       "semanticCommitType": "deps",
-      "semanticCommitScope": "platformio"
+      "semanticCommitScope": "python"
+    },
+    {
+      "matchManagers": [
+        "npm"
+      ],
+      "matchFileNames": [
+        "package.json"
+      ],
+      "groupName": "Node.js dependencies",
+      "prTitle": "🟢 Update {{groupName}}",
+      "semanticCommits": "enabled",
+      "semanticCommitType": "deps",
+      "semanticCommitScope": "nodejs"
     },
     {
       "matchManagers": [
         "github-actions"
       ],
       "groupName": "GitHub Actions",
-      "schedule": ["before 6am on monday"]
+      "prTitle": "⚡ Update {{groupName}}"
     }
   ],
   "dockerfile": {
@@ -43,7 +56,7 @@
   },
   "pip_requirements": {
     "enabled": true,
-    "fileMatch": ["(^|/)Dockerfile$"]
+    "fileMatch": ["(^|/)requirements\\.txt$"]
   },
   "labels": [
     "dependencies"

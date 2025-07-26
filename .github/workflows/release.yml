@@ -1,4 +1,4 @@
-name: Release PlatformIO Docker Image to GHCR
+name: Release KiCADdev Docker Image to GHCR
 
 on:
   push:
@@ -45,8 +45,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/the78mole/platformio-docker:latest
-            ghcr.io/the78mole/platformio-docker:${{ steps.semver.outputs.version_tag }}
+            ghcr.io/the78mole/kicaddev-docker:latest
+            ghcr.io/the78mole/kicaddev-docker:${{ steps.semver.outputs.version_tag }}
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2

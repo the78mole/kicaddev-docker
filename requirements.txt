@@ -1,0 +1,11 @@
+# KiCad Production Tools and Extensions
+matplotlib==3.9.2
+pillow>=9.0,<10.0
+reportlab==4.2.5
+
+# KiCad and PCB Tools - let pip resolve compatible versions
+kikit
+pcbdraw
+
+# Interactive HTML BOM generator
+InteractiveHtmlBom

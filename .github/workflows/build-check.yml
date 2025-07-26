@@ -1,4 +1,4 @@
-name: Build PlatformIO Docker image (Check Only)
+name: Build KiCADdev Docker image (Check Only)
 
 on:
   pull_request:
@@ -17,4 +17,4 @@ jobs:
         with:
           context: .
           push: false
-          tags: ghcr.io/the78mole/platformio-docker:check
+          tags: ghcr.io/the78mole/kicaddev-docker:check

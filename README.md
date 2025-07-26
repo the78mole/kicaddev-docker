@@ -1,332 +1,362 @@
-# 🧰 PlatformIO Docker
+# 🔧 KiCad CLI Tools & Production Extensions
 
-> **Production-ready Docker image for IoT and embedded development with PlatformIO**
+> **Lightweight Docker image for KiCad command-line tools and PCB production automation**
 
-A containerized development environment that provides everything you need for embedded systems development. Built on Ubuntu Noble with pinned versions for reproducible builds and automated updates via Renovate.
+A minimal containerized environment focused on KiCad CLI tools and production extensions for automated PCB manufacturing workflows. Built on Ubuntu 24.04 with KiCad 9.0 CLI tools and essential Python packages for PCB automation.
 
-[![Build Status](https://github.com/the78mole/platformio-docker/actions/workflows/build-check.yml/badge.svg)](https://github.com/the78mole/platformio-docker/actions/workflows/build-check.yml)
-[![Release Status](https://github.com/the78mole/platformio-docker/actions/workflows/release.yml/badge.svg)](https://github.com/the78mole/platformio-docker/actions/workflows/release.yml)
-[![Version](https://img.shields.io/github/v/tag/the78mole/platformio-docker?label=version&sort=semver)](https://github.com/the78mole/platformio-docker/releases)
-[![License: MIT](https://img.shields.io/github/license/the78mole/platformio-docker)](LICENSE)
-[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen?logo=renovatebot)](https://renovatebot.com/)
+[![Build Status](https://github.com/the78mole/kicaddev-docker/actions/workflows/build-check.yml/badge.svg)](https://github.com/the78mole/kicaddev-docker/actions/workflows/build-check.yml)
+[![Test Status](https://github.com/the78mole/kicaddev-docker/actions/workflows/test-precommit.yml/badge.svg)](https://github.com/the78mole/kicaddev-docker/actions/workflows/test-precommit.yml)
+[![License: MIT](https://img.shields.io/github/license/the78mole/kicaddev-docker)](LICENSE)
+[![KiCad Version](https://img.shields.io/badge/KiCad-9.0_CLI-blue)](https://www.kicad.org/)
 
 ---
 
 ## ✨ Features
 
-- 🏗️ **Pre-configured PlatformIO** - Latest stable version with all essential tools
-- 🔧 **Development-ready** - Git, pre-commit hooks, and code quality tools included  
-- 🎯 **Multi-platform support** - Arduino, ESP32, ESP8266, STM32, Raspberry Pi Pico, and more
-- 🐳 **Optimized Docker layers** - Fast builds with intelligent caching
-- 🔒 **Pinned versions** - Reproducible builds with automated dependency updates
-- 👤 **VS Code compatible** - Pre-configured `vscode` user (UID/GID 1000)
-- 🔌 **USB device support** - Ready for hardware flashing and debugging
+- 🔧 **KiCad 9.0 CLI** - Command-line tools for automated PCB workflows
+- 📊 **PCB Automation** - KiKit, PCBDraw for manufacturing outputs
+- 🐍 **Python Extensions** - Essential packages for KiCad automation
+- 📁 **Production Scripts** - Ready-to-use export scripts for Gerbers, PDFs, and 3D files
+- 🏗️ **CI/CD Ready** - Perfect for automated build pipelines
+- 📦 **Lightweight** - Minimal image size focused on CLI tools only
 
 ---
 
 ## 📦 What's Included
 
-| Category | Tool | Version | Purpose |
-|----------|------|---------|---------|
-| **🏗️ Build System** | PlatformIO | `6.1.18` | Universal IoT development platform |
-| **🔧 Development** | Pre-commit | `4.2.0` | Code quality and git hooks |
-| **⚡ Hardware** | esptool | `5.0.1` | ESP32/ESP8266 flashing and debugging |
-| **🐚 Shell Tools** | ShellCheck | `0.9.0` | Shell script analysis |
-| **🔄 Version Control** | Git | Latest | Source code management |
-| **🐍 Python** | Python 3 | Latest | Runtime and package management |
+### 🔧 KiCad CLI Tools
+| Tool | Purpose |
+|------|---------|
+| **kicad-cli** | Core CLI interface for KiCad operations |
+| **Libraries** | Complete symbol, footprint, and 3D model libraries |
+| **kicad_export** | Custom script for production data export |
 
-## 🚀 Quick Start
+### 📊 PCB Automation Tools
+| Tool | Purpose |
+|------|---------|
+| **KiKit** | PCB panelization and automation |
+| **PCBDraw** | PCB visualization and documentation |
+| **InteractiveHtmlBom** | Interactive HTML BOM for assembly |
+| **Gerbv** | Gerber file viewing and verification |
 
-### Option 1: Direct Docker Usage
-
-```bash
-# Pull the latest image
-docker pull ghcr.io/the78mole/platformio-docker:latest
-
-# Create a new PlatformIO project
-docker run --rm -v $(pwd):/workspace \
-  ghcr.io/the78mole/platformio-docker:latest \
-  pio project init --board esp32dev
-
-# Build your project
-docker run --rm -v $(pwd):/workspace \
-  ghcr.io/the78mole/platformio-docker:latest \
-  pio run
-
-# Upload to connected device
-docker run --rm -v $(pwd):/workspace \
-  --device=/dev/ttyUSB0 \
-  ghcr.io/the78mole/platformio-docker:latest \
-  pio run --target upload
-```
-
-### Option 2: Interactive Development Shell
-
-```bash
-# Start an interactive development session
-docker run -it --rm \
-  -v $(pwd):/workspace \
-  --device=/dev/ttyUSB0 \
-  --device=/dev/ttyACM0 \
-  ghcr.io/the78mole/platformio-docker:latest
-
-# Inside the container, you have full access to:
-pio --help              # PlatformIO CLI
-pre-commit --help       # Code quality tools
-esptool.py --help       # ESP32/ESP8266 tools
-git --version           # Git for version control
-```
-
-## 🧰 VS Code DevContainer Setup
-
-Perfect for seamless development in VS Code with the PlatformIO IDE extension.
-
-### Step 1: Create `.devcontainer/devcontainer.json`
-
-```json
-{
-  "name": "PlatformIO Development Environment",
-  "image": "ghcr.io/the78mole/platformio-docker:latest",
-  
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "platformio.platformio-ide",
-        "ms-vscode.cpptools",
-        "twxs.cmake"
-      ],
-      "settings": {
-        "terminal.integrated.defaultProfile.linux": "bash"
-      }
-    }
-  },
-  
-  "forwardPorts": [8008, 8080],
-  "remoteUser": "vscode",
-  
-  "features": {},
-  "mounts": [
-    "source=/dev,target=/dev,type=bind,consistency=cached"
-  ],
-  
-  "runArgs": [
-    "--privileged",
-    "--device-cgroup-rule=c 188:* rmw"
-  ],
-  
-  "postCreateCommand": "pio system info"
-}
-```
-
-### Step 2: Open in DevContainer
-1. Install the **Dev Containers** extension in VS Code
-2. Open your project folder
-3. Run **Dev Containers: Reopen in Container** from the command palette
-4. VS Code will build and start your development environment automatically
-
-### Step 3: Start Developing
-- Use the PlatformIO sidebar for project management
-- Access hardware devices directly from the container
-- Enjoy full IntelliSense and debugging support
-
-## 🎯 Supported Platforms & Boards
-
-This image supports **200+ development boards** across multiple architectures:
-
-### 🔥 Popular Platforms
-| Platform | Examples | Use Cases |
-|----------|----------|-----------|
-| **ESP32/ESP8266** | ESP32-DevKit, NodeMCU, Wemos D1 | IoT, WiFi projects, sensors |
-| **Arduino** | Uno, Nano, Mega, Leonardo | Learning, prototyping, sensors |
-| **STM32** | Nucleo, Blue Pill, Discovery | Professional embedded systems |
-| **RP2040** | Raspberry Pi Pico, Pico W | Microcontroller projects |
-| **nRF52** | Nordic boards | Bluetooth Low Energy |
-| **Teensy** | Teensy 3.x, 4.x | High-performance projects |
-
-### 🛠️ Framework Support
-- **Arduino Framework** - Most beginner-friendly
-- **ESP-IDF** - Professional ESP32 development  
-- **STM32Cube** - STMicroelectronics official framework
-- **Mbed OS** - ARM's IoT operating system
-- **FreeRTOS** - Real-time operating system
-- **And many more...**
-
-## ⚡ Common Development Workflows
-
-### Creating a New ESP32 Project
-```bash
-# Initialize project for ESP32
-pio project init --board esp32dev --project-option "framework=arduino"
-
-# Add libraries
-pio lib install "WiFi" "ArduinoJson"
-
-# Build and upload
-pio run --target upload --upload-port /dev/ttyUSB0
-```
-
-### Setting up Pre-commit Hooks
-```bash
-# Install pre-commit hooks (already included in image)
-pre-commit install
-
-# Run hooks manually
-pre-commit run --all-files
-```
-
-### Multi-Environment Development
-Create a `platformio.ini` for multiple target boards:
-
-```ini
-[platformio]
-default_envs = esp32, uno
-
-[env:esp32]
-platform = espressif32
-board = esp32dev
-framework = arduino
-
-[env:uno] 
-platform = atmelavr
-board = uno
-framework = arduino
-
-[env:pico]
-platform = raspberrypi
-board = pico
-framework = arduino
-```
-
-Build for specific environment:
-```bash
-pio run --environment esp32
-```
-
-## 🐳 Docker Image Details
-
-### 📤 Availability
-The image is automatically built and published to GitHub Container Registry:
-
-```bash
-# Latest stable version
-ghcr.io/the78mole/platformio-docker:latest
-
-# Specific version tags
-ghcr.io/the78mole/platformio-docker:v1.0.0
-ghcr.io/the78mole/platformio-docker:v1.1.0
-```
-
-### 🏗️ Image Architecture
-- **Base Image**: `ubuntu:noble` (Ubuntu 24.04.2 LTS)
-- **User**: `vscode` (UID/GID 1000) for seamless host integration
-- **Working Directory**: `/workspace`
-- **Size**: ~500MB (optimized layers)
-- **Architecture**: `linux/amd64`
-
-### 🔒 Security & Updates
-- **Pinned versions** for reproducible builds
-- **Automated updates** via Renovate bot
-- **Security scanning** in CI/CD pipeline
-- **Minimal attack surface** - only essential tools included
-
-## 🔌 Hardware Integration
-
-### USB Device Access
-For flashing and debugging physical devices:
-
-```bash
-# Single device (most common)
-docker run --rm -it --device=/dev/ttyUSB0 \
-  -v $(pwd):/workspace \
-  ghcr.io/the78mole/platformio-docker:latest
-
-# Multiple devices
-docker run --rm -it \
-  --device=/dev/ttyUSB0 \
-  --device=/dev/ttyACM0 \
-  --device=/dev/ttyUSB1 \
-  -v $(pwd):/workspace \
-  ghcr.io/the78mole/platformio-docker:latest
-
-# All USB devices (use with caution)
-docker run --rm -it --privileged \
-  -v /dev:/dev \
-  -v $(pwd):/workspace \
-  ghcr.io/the78mole/platformio-docker:latest
-```
-
-### Device Permissions
-The image includes udev rules for common development boards. If you encounter permission issues:
-
-```bash
-# On host system, add your user to dialout group
-sudo usermod -a -G dialout $USER
-
-# Or run container with privileged access
-docker run --privileged ...
-```
-
-## 🚨 Troubleshooting
-
-### Common Issues
-
-**❌ Device not found (`/dev/ttyUSB0` not available)**
-```bash
-# Check available devices on host
-ls -la /dev/tty*
-
-# Use correct device path
-docker run --device=/dev/ttyACM0 ...
-```
-
-**❌ Permission denied when uploading**
-```bash
-# Ensure proper device permissions
-docker run --privileged --device=/dev/ttyUSB0 ...
-
-# Or add udev rules on host system
-```
-
-**❌ Libraries not found**
-```bash
-# Update PlatformIO package index
-pio update
-
-# Install missing libraries
-pio lib install "LibraryName"
-```
-
-### 🛟 Getting Help
-- **PlatformIO Documentation**: https://docs.platformio.org/
-- **GitHub Issues**: https://github.com/the78mole/platformio-docker/issues
-- **PlatformIO Community**: https://community.platformio.org/
-
-## 🤝 Contributing
-
-We welcome contributions! Please see [CONTRIBUTION.md](CONTRIBUTION.md) for guidelines.
-
-### Development Workflow
-```bash
-# Clone the repository
-git clone https://github.com/the78mole/platformio-docker.git
-cd platformio-docker
-
-# Build the image locally
-docker build -t platformio-docker .
-
-# Test with the included test project
-cd test-project
-docker run --rm -v $(pwd):/workspace platformio-docker pio run
-```
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
+### 🐍 Python Ecosystem
+| Tool | Purpose |
+|------|---------|
+| **Matplotlib** | Scientific plotting and visualization |
+| **Pillow** | Image processing and manipulation |
+| **ReportLab** | PDF generation from Python |
 
 ---
 
-<div align="center">
-  <strong>Happy Coding! 🚀</strong><br>
-  <em>Built with ❤️ for the embedded development community</em>
-</div>
+## 🚀 Quick Start
 
+### Export Production Files
+
+```bash
+# Generate manufacturing files from KiCad project
+docker run --rm \
+  -v $(pwd):/workspace \
+  kicaddev-cli \
+  kicad_export project.kicad_pro
+```
+
+### Command Line Operations
+
+```bash
+# Export Gerber files
+docker run --rm -v $(pwd):/workspace kicaddev-cli \
+  kicad-cli pcb export gerbers --output ./gerbers/ project.kicad_pcb
+
+# Export schematic PDF
+docker run --rm -v $(pwd):/workspace kicaddev-cli \
+  kicad-cli sch export pdf --output ./schematic.pdf project.kicad_sch
+
+# Export 3D view
+docker run --rm -v $(pwd):/workspace kicaddev-cli \
+  kicad-cli pcb export step --output ./3d/project.step project.kicad_pcb
+
+# Generate Interactive HTML BOM
+docker run --rm -v $(pwd):/workspace kicaddev-cli \
+  generate_ibom_headless --dest-dir ./bom/ --name-format project_ibom --no-browser project.kicad_pcb
+```
+
+### Interactive Shell
+
+```bash
+# Start interactive development session
+docker run --rm -it \
+  -v $(pwd):/workspace \
+  kicaddev-cli bash
+
+# Available commands inside container:
+kicad-cli --help              # Show all available CLI commands
+kicad_export project.kicad_pro # Export production files
+generate_ibom_headless --help  # Interactive HTML BOM options
+kicad-help                    # Show quick help
+```
+
+---
+
+## 📋 kicad_export Script
+
+The included `kicad_export` script automates the generation of all production files:
+
+```bash
+kicad_export my_project.kicad_pro
+```
+
+**Generates:**
+- **Gerber files** → `production/gerbers/`
+- **Drill files** → `production/drill/`
+- **Schematic PDF** → `production/pdf/schematic.pdf`
+- **PCB PDF** → `production/pdf/pcb.pdf`
+- **3D STEP file** → `production/3d/project.step`
+- **Interactive HTML BOM** → `production/bom/project_ibom.html`
+
+---
+
+## 🏗️ CI/CD Integration
+
+Perfect for automated workflows in GitHub Actions, GitLab CI, or other CI/CD systems:
+
+### GitHub Actions Example
+
+```yaml
+name: Generate Production Files
+
+on:
+  push:
+    paths: ['*.kicad_*']
+
+jobs:
+  generate-files:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Generate Production Files
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/workspace \
+            kicaddev-cli \
+            kicad_export project.kicad_pro
+      
+      - name: Upload Production Files
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-files
+          path: production/
+```
+
+### GitLab CI Example
+
+```yaml
+generate-production:
+  image: kicaddev-cli
+  script:
+    - kicad_export project.kicad_pro
+  artifacts:
+    paths:
+      - production/
+    expire_in: 1 week
+```
+
+---
+
+## 🎯 Use Cases
+
+### 📊 Automated Manufacturing
+- Generate Gerber files in CI/CD pipelines
+- Validate design rules automatically
+- Create consistent manufacturing outputs
+
+### 🔍 Design Verification
+- Export PDFs for design review
+- Generate 3D models for mechanical verification
+- Automated documentation generation
+
+### 📈 Batch Processing
+- Process multiple KiCad projects
+- Standardized export workflows
+- Manufacturing data consistency
+
+---
+
+## 🌐 Interactive HTML BOM
+
+The container includes the **InteractiveHtmlBom** plugin for generating interactive assembly documentation:
+
+### Features
+- **Interactive PCB View** - Click components to highlight on PCB
+- **Searchable BOM Table** - Filter and sort components easily  
+- **Assembly Helper** - Perfect for hand-assembly and prototyping
+- **Standalone HTML** - No internet connection required
+- **Mobile Friendly** - Works on tablets and phones
+
+### Usage
+
+```bash
+# Generate Interactive HTML BOM
+docker run --rm -v $(pwd):/workspace kicaddev-cli \
+  generate_ibom_headless --dest-dir ./bom/ --name-format project_ibom --no-browser project.kicad_pcb
+
+# With custom options
+docker run --rm -v $(pwd):/workspace kicaddev-cli \
+  generate_ibom_headless \
+    --dest-dir ./assembly/ \
+    --name-format "${project}_assembly_guide" \
+    --no-browser \
+    --dark-mode \
+    --highlight-pin1 all \
+    --extra-fields "MPN,Manufacturer" \
+    project.kicad_pcb
+```
+
+### Common Options
+- `--dark-mode` - Use dark theme
+- `--highlight-pin1 all` - Highlight pin 1 on all components
+- `--extra-fields "Field1,Field2"` - Include custom fields in BOM
+- `--blacklist "TP*,H*"` - Exclude test points and mounting holes
+- `--no-browser` - Don't open browser (required for headless operation)
+
+The generated HTML file is completely self-contained and can be:
+- Shared with assembly technicians
+- Included in project documentation
+- Hosted on any web server
+- Used offline during assembly
+
+---
+
+## 🔧 Advanced Usage
+
+### Custom Export Scripts
+
+Create your own export scripts using KiCad CLI:
+
+```bash
+#!/bin/bash
+# custom_export.sh
+
+PROJECT_FILE="$1"
+PROJECT_NAME=$(basename "$PROJECT_FILE" .kicad_pro)
+PROJECT_DIR=$(dirname "$PROJECT_FILE")
+
+cd "$PROJECT_DIR"
+
+# Export specific layers
+kicad-cli pcb export gerbers \
+  --layers "F.Cu,B.Cu,F.Mask,B.Mask" \
+  --output "./custom_gerbers/" \
+  "${PROJECT_NAME}.kicad_pcb"
+
+# Export drill with specific options
+kicad-cli pcb export drill \
+  --format excellon \
+  --drill-origin absolute \
+  --output "./custom_drill/" \
+  "${PROJECT_NAME}.kicad_pcb"
+```
+
+### Python Automation
+
+Use Python for advanced automation:
+
+```python
+#!/usr/bin/env python3
+import subprocess
+import sys
+from pathlib import Path
+
+def export_project(project_file):
+    project_path = Path(project_file)
+    project_name = project_path.stem
+    output_dir = project_path.parent / "production"
+    
+    # Create output directories
+    (output_dir / "gerbers").mkdir(parents=True, exist_ok=True)
+    (output_dir / "pdf").mkdir(parents=True, exist_ok=True)
+    
+    # Export gerbers
+    subprocess.run([
+        "kicad-cli", "pcb", "export", "gerbers",
+        "--output", str(output_dir / "gerbers"),
+        str(project_path.with_suffix(".kicad_pcb"))
+    ])
+    
+    # Export schematic PDF
+    subprocess.run([
+        "kicad-cli", "sch", "export", "pdf",
+        "--output", str(output_dir / "pdf" / f"{project_name}_schematic.pdf"),
+        str(project_path.with_suffix(".kicad_sch"))
+    ])
+
+if __name__ == "__main__":
+    export_project(sys.argv[1])
+```
+
+---
+
+## 🐳 Docker Image Details
+
+### Image Size & Architecture
+- **Base**: Ubuntu 24.04 LTS
+- **Architecture**: linux/amd64
+- **Size**: ~6.8GB (includes KiCad, Python tools, and dependencies)
+- **User**: root (for CI/CD compatibility)
+- **Working Directory**: `/workspace`
+
+### Included KiCad Components
+- KiCad CLI tools (no GUI)
+- Complete symbol libraries
+- Footprint libraries
+- 3D model libraries
+
+---
+
+## 🧪 Testing
+
+Test the container with a sample project:
+
+```bash
+# Clone a test project
+git clone https://github.com/your-org/sample-kicad-project.git
+cd sample-kicad-project
+
+# Test production export
+docker run --rm -v $(pwd):/workspace kicaddev-cli \
+  kicad_export sample.kicad_pro
+
+# Verify output
+ls -la production/
+```
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Test your changes with KiCad projects
+4. Commit your changes (`git commit -m 'Add amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- [KiCad EDA](https://www.kicad.org/) - Open source electronics design automation suite
+- [KiKit](https://github.com/yaqwsx/KiKit) - PCB panelization and automation toolkit
+- [PCBDraw](https://github.com/yaqwsx/PcbDraw) - PCB visualization library
+- [InteractiveHtmlBom](https://github.com/openscopeproject/InteractiveHtmlBom) - Interactive assembly documentation generator
+- Ubuntu and the open source community
+
+---
+
+**Built with ❤️ for the hardware development community**
