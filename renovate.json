@@ -14,7 +14,6 @@
         "ubuntu"
       ],
       "groupName": "Base image updates",
-      "prTitle": "🐳 Update {{groupName}}"
     },
     {
       "matchManagers": [
@@ -24,7 +23,6 @@
         "requirements.txt"
       ],
       "groupName": "Python dependencies",
-      "prTitle": "🐍 Update {{groupName}}",
       "semanticCommits": "enabled",
       "semanticCommitType": "deps",
       "semanticCommitScope": "python"
@@ -37,7 +35,6 @@
         "package.json"
       ],
       "groupName": "Node.js dependencies",
-      "prTitle": "🟢 Update {{groupName}}",
       "semanticCommits": "enabled",
       "semanticCommitType": "deps",
       "semanticCommitScope": "nodejs"
@@ -47,7 +44,6 @@
         "github-actions"
       ],
       "groupName": "GitHub Actions",
-      "prTitle": "⚡ Update {{groupName}}"
     }
   ],
   "dockerfile": {
