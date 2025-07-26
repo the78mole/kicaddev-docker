@@ -1,7 +1,7 @@
 Verwendung und Installation
 ===========================
 
-Dieser Abschnitt beschreibt die praktische Verwendung des 4CH-Opto-ISO Boards.
+Dieses Kapitel beschreibt die praktische Verwendung des 4CH-Opto-ISO PCB.
 
 Vorbereitung
 -----------
@@ -9,18 +9,20 @@ Vorbereitung
 Benötigte Komponenten
 ~~~~~~~~~~~~~~~~~~~~
 
-* 4CH-Opto-ISO PCB (fertig bestückt)
-* Passende Anschlusskabel oder Steckverbinder
-* Versorgungsspannung für Ein- und Ausgangsseite
-* Multimeter für erste Tests
+Vor der Installation stellen Sie sicher, dass alle Komponenten verfügbar sind:
+
+* 4CH-Opto-ISO PCB (bestückt)
+* Stromversorgung (3.3V-5V DC)
+* Verbindungskabel
+* Anschlussstecker
 
 Werkzeuge
 ~~~~~~~~
 
-* Schraubendreher (je nach Anschlussart)
-* Abisolierzange
-* Multimeter
-* Oszilloskop (für erweiterte Tests)
+* Lötkolben (falls Anpassungen nötig)
+* Multimeter für Tests
+* Oszilloskop (optional, für Signalanalyse)
+* Antistatik-Schutz
 
 Installation
 -----------
@@ -28,43 +30,90 @@ Installation
 Mechanische Montage
 ~~~~~~~~~~~~~~~~~~
 
-1. **Montageposition wählen:**
+1. **Montageort wählen**
    
    * Trockene, staubfreie Umgebung
-   * Ausreichende Belüftung
-   * Zugänglichkeit für Anschlüsse
+   * Temperaturbereich: -10°C bis +60°C
+   * Keine direkte Sonneneinstrahlung
 
-2. **Befestigung:**
+2. **Befestigung**
    
-   * Montage auf DIN-Schiene (optional)
-   * Verschraubung an Gehäusewand
-   * Einbau in Schaltschrank
+   * Verwenden Sie die vorgesehenen Montagelöcher
+   * M3 Schrauben empfohlen
+   * Abstand zur Gehäusewand: mindestens 5mm
+
+3. **Mechanische Sicherheit**
+   
+   * Keine scharfen Kanten berühren
+   * Komponenten vor mechanischen Stößen schützen
+   * Ausreichende Belüftung sicherstellen
 
 Elektrische Anschlüsse
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. warning::
-   Alle Anschlüsse nur bei ausgeschalteter Versorgungsspannung vornehmen!
+.. danger::
+   
+   Vor allen elektrischen Arbeiten die Stromversorgung trennen!
 
-**Eingangsseitige Anschlüsse:**
+**Stromversorgung (J1):**
 
-.. code-block:: text
+.. list-table:: Anschluss J1 - Stromversorgung
+   :widths: 15 20 65
+   :header-rows: 1
 
-   Kanal 1: IN1+ / IN1-
-   Kanal 2: IN2+ / IN2-
-   Kanal 3: IN3+ / IN3-
-   Kanal 4: IN4+ / IN4-
-   Versorgung: VCC_IN / GND_IN (3.3V - 5V)
+   * - Pin
+     - Signal
+     - Beschreibung
+   * - 1
+     - +VDD
+     - Positive Versorgungsspannung (3.3V-5V)
+   * - 2
+     - GND
+     - Masse/Ground
 
-**Ausgangsseitige Anschlüsse:**
+**Signaleingang (J2):**
 
-.. code-block:: text
+.. list-table:: Anschluss J2 - Eingang
+   :widths: 15 20 65
+   :header-rows: 1
 
-   Kanal 1: OUT1+ / OUT1-
-   Kanal 2: OUT2+ / OUT2-
-   Kanal 3: OUT3+ / OUT3-
-   Kanal 4: OUT4+ / OUT4-
-   Versorgung: VCC_OUT / GND_OUT (3.3V - 24V)
+   * - Pin
+     - Signal
+     - Beschreibung
+   * - 1
+     - IN1
+     - Signaleingang Kanal 1
+   * - 2
+     - IN2
+     - Signaleingang Kanal 2
+   * - 3
+     - IN3
+     - Signaleingang Kanal 3
+   * - 4
+     - GND
+     - Signalmasse
+
+**Signalausgang (J3):**
+
+.. list-table:: Anschluss J3 - Ausgang
+   :widths: 15 20 65
+   :header-rows: 1
+
+   * - Pin
+     - Signal
+     - Beschreibung
+   * - 1
+     - OUT1
+     - Signalausgang Kanal 1
+   * - 2
+     - OUT2
+     - Signalausgang Kanal 2
+   * - 3
+     - OUT3
+     - Signalausgang Kanal 3
+   * - 4
+     - GND
+     - Signalmasse
 
 Grundkonfiguration
 -----------------
@@ -72,115 +121,122 @@ Grundkonfiguration
 Spannungsversorgung
 ~~~~~~~~~~~~~~~~~~
 
-1. **Eingangsspannung anlegen:**
+1. **Spannungsprüfung**
    
-   .. code-block:: text
+   Überprüfen Sie die Versorgungsspannung mit einem Multimeter:
    
-      VCC_IN: 5V DC (oder 3.3V je nach Anwendung)
-      GND_IN: Masse (Eingangsseite)
+   * Sollwert: 3.3V - 5.0V DC
+   * Toleranz: ±5%
+   * Welligkeit: <50mV
 
-2. **Ausgangsspannung anlegen:**
+2. **Stromaufnahme-Test**
    
-   .. code-block:: text
+   * Leerlauf: <10mA
+   * Betrieb: 50-100mA (typisch)
+   * Maximum: <500mA
+
+3. **Funktionstest**
    
-      VCC_OUT: 5V-24V DC (je nach nachgelagerter Schaltung)
-      GND_OUT: Masse (Ausgangsseite, isoliert von Eingangsseite)
+   * LED-Anzeigen überprüfen
+   * Signalausgabe messen
+   * Temperatur überwachen
 
 Signalverbindungen
 ~~~~~~~~~~~~~~~~~
 
-**Digitale Signale:**
+1. **Eingangssignale**
+   
+   * Spannungspegel: 0V - VDD
+   * Impedanz: >10kΩ
+   * Frequenzbereich: DC - 100kHz
 
-.. code-block:: text
-
-   Eingangssignal: 0V (Low) / VCC_IN (High)
-   Ausgangssignal: Open Collector / Pull-Up über R_pullup
-
-**Analoge Signale:**
-
-.. note::
-   Opto-Isolatoren sind primär für digitale Signale konzipiert. 
-   Für analoge Signale sind spezielle Opto-Isolatoren erforderlich.
+2. **Ausgangssignale**
+   
+   * Ausgangsspannung: 0V - VDD
+   * Ausgangsstrom: max. 20mA pro Kanal
+   * Lastimpedanz: >1kΩ empfohlen
 
 Anwendungsbeispiele
 ------------------
 
-Mikrocontroller-Interface
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Beispiel 1: Signalverstärkung
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: c
+.. code-block:: text
 
-   // Arduino Beispiel - Eingangsseitig
-   digitalWrite(OUTPUT_PIN, HIGH);  // Signal senden
-   delay(100);
-   digitalWrite(OUTPUT_PIN, LOW);   // Signal stoppen
+   Eingangssignal -> J2 (Pin 1) -> Verstärkung -> J3 (Pin 1) -> Ausgangssignal
+   
+   Verstärkungsfaktor: 2x
+   Bandbreite: DC - 50kHz
+   
+Beispiel 2: Signalfilterung
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: c
+.. code-block:: text
 
-   // Arduino Beispiel - Ausgangsseitig  
-   int signal = digitalRead(INPUT_PIN);
-   if (signal == LOW) {  // Opto-Isolator aktiv (invertiert)
-       // Signal empfangen - Aktion ausführen
-   }
+   Verrauschtes Signal -> J2 -> Tiefpassfilter -> J3 -> Gefiltertes Signal
+   
+   Grenzfrequenz: 10kHz
+   Dämpfung: -40dB/Dekade
 
 Industrielle Steuerung
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 
-**SPS-Integration:**
+Das 4CH-Opto-ISO kann in industriellen Steuerungsanlagen eingesetzt werden:
 
-* Eingänge an SPS-Ausgänge anschließen
-* Ausgänge an SPS-Eingänge anschließen
-* Separate 24V-Versorgung für Ausgangsseite
+.. code-block:: text
 
-**Sensor-Interface:**
+   SPS-Ausgang -> Optokoppler -> 4CH-Opto-ISO -> Aktor
+   
+   Vorteile:
+   * Galvanische Trennung
+   * Störungsunterdrückung  
+   * Signalaufbereitung
 
-* Sensorsignale über Opto-Isolator zur Steuerung
-* Galvanische Trennung für Sicherheit
-* Schutz vor Überspannungen
+.. note::
+   
+   Bei industriellen Anwendungen sind zusätzliche Schutzmaßnahmen zu beachten.
 
 Fehlerbehebung
---------------
+=============
 
 Häufige Probleme
 ~~~~~~~~~~~~~~~
 
-.. list-table::
-   :header-rows: 1
-   :widths: 30 35 35
+**Problem: Keine Stromversorgung**
 
-   * - Problem
-     - Mögliche Ursache
-     - Lösung
-   * - Kein Ausgangssignal
-     - Keine Eingangsspannung
-     - VCC_IN prüfen
-   * - Signal invertiert
-     - Normal bei Opto-Isolatoren
-     - Software anpassen
-   * - Schwaches Signal
-     - Pull-Up-Widerstand fehlt
-     - R_pullup ergänzen
-   * - Überhitzung
-     - Zu hoher Eingangsstrom
-     - Vorwiderstand prüfen
+* Überprüfen Sie die Kabelverbindungen
+* Messen Sie die Eingangsspannung
+* Kontrollieren Sie die Sicherungen
+
+**Problem: Kein Ausgangssignal**
+
+* Eingangssignal vorhanden?
+* LED-Status überprüfen
+* Lastimpedanz kontrollieren
+
+**Problem: Überhitzung**
+
+* Umgebungstemperatur reduzieren
+* Belüftung verbessern
+* Laststrom verringern
 
 Testverfahren
 ~~~~~~~~~~~~
 
-**Kontinuitätstest:**
+**Grundfunktionstest:**
 
-1. Versorgungsspannungen messen
-2. Eingangsstrom bei aktivem Signal messen (sollte 10-20mA sein)
-3. Ausgangsspannung bei aktivem/inaktivem Eingang messen
+1. Spannungsversorgung anlegen
+2. Eingangssignal (1kHz Sinus, 1V) anlegen
+3. Ausgang mit Oszilloskop messen
+4. Verstärkung und Phase prüfen
 
-**Isolationstest:**
+**Langzeittest:**
 
-.. warning::
-   Nur mit geeignetem Isolationstester durchführen!
-
-1. Alle Anschlüsse trennen
-2. Isolationsspannung zwischen Ein- und Ausgangsseite anlegen
-3. Isolationswiderstand sollte > 10 MΩ bei 500V sein
+1. Kontinuierlicher Betrieb (24h)
+2. Temperaturüberwachung
+3. Signalqualität überwachen
+4. Drift-Messung
 
 Wartung
 ------
@@ -188,17 +244,17 @@ Wartung
 Regelmäßige Prüfungen
 ~~~~~~~~~~~~~~~~~~~
 
-* **Monatlich:** Sichtprüfung auf Beschädigungen
-* **Quartalsweise:** Funktionstest aller Kanäle
-* **Jährlich:** Isolationstest erneuern
+* **Monatlich**: Sichtprüfung auf Beschädigungen
+* **Halbjährlich**: Elektrische Parameter prüfen
+* **Jährlich**: Vollständige Funktionsprüfung
 
 Reinigung
 ~~~~~~~~
 
-* Trockene, antistatische Reinigung
-* Keine Lösungsmittel verwenden
-* Kontakte vor Korrosion schützen
+* Druckluft für Staubentfernung
+* Isopropanol für Kontaktreinigung
+* Keine aggressiven Lösungsmittel verwenden
 
-.. tip::
-   Dokumentieren Sie alle Änderungen und Tests für die Nachverfolgbarkeit 
-   in sicherheitskritischen Anwendungen.
+.. warning::
+   
+   Vor Reinigungsarbeiten immer die Stromversorgung trennen!

@@ -1,17 +1,12 @@
 Fertigung und Produktion
 =======================
 
-Dieser Abschnitt beschreibt den Fertigungsprozess und die Produktionsdateien für das 4CH-Opto-ISO Board.
+Dieses Kapitel beschreibt die Fertigung und Produktion des 4CH-Opto-ISO PCB.
 
-Automatisierte Produktion mit KiCad-CLI
----------------------------------------
+Fertigungsunterlagen
+===================
 
-Das Projekt nutzt die KiCad-CLI Docker-Umgebung für eine vollautomatisierte Generierung aller Produktionsdateien:
-
-.. code-block:: bash
-
-   # Vollständiger Export aller Produktionsdateien
-   docker run --rm -v $(pwd):/workspace kicaddev-cli kicad_export 4CH-Opto-ISO.kicad_pro
+Alle notwendigen Fertigungsunterlagen sind im `production/` Verzeichnis verfügbar.
 
 Generierte Dateien
 -----------------
@@ -19,40 +14,44 @@ Generierte Dateien
 Gerber-Dateien
 ~~~~~~~~~~~~~
 
-Die Gerber-Dateien befinden sich im Verzeichnis ``production/gerbers/`` und umfassen:
+Die Gerber-Dateien enthalten alle Layerinformationen:
 
-* **Kupferlagen:**
-  
-  * ``4CH-Opto-ISO-F_Cu.gtl`` - Oberseite (Top Layer)
-  * ``4CH-Opto-ISO-B_Cu.gbl`` - Unterseite (Bottom Layer)
+.. code-block:: text
 
-* **Lötmasken:**
-  
-  * ``4CH-Opto-ISO-F_Mask.gts`` - Lötmaske Oberseite
-  * ``4CH-Opto-ISO-B_Mask.gbs`` - Lötmaske Unterseite
+   production/gerbers/
+   ├── 4CH-Opto-ISO-F_Cu.gtl          # Oberseite Kupfer
+   ├── 4CH-Opto-ISO-B_Cu.gbl          # Unterseite Kupfer  
+   ├── 4CH-Opto-ISO-F_Mask.gts        # Oberseite Lötresist
+   ├── 4CH-Opto-ISO-B_Mask.gbs        # Unterseite Lötresist
+   ├── 4CH-Opto-ISO-F_Silkscreen.gto  # Oberseite Bestückungsdruck
+   ├── 4CH-Opto-ISO-B_Silkscreen.gbo  # Unterseite Bestückungsdruck
+   ├── 4CH-Opto-ISO-Edge_Cuts.gm1     # Platinenkontur
+   └── 4CH-Opto-ISO.drl               # Bohrdatei
 
-* **Siebdruck:**
-  
-  * ``4CH-Opto-ISO-F_Silkscreen.gto`` - Siebdruck Oberseite
-  * ``4CH-Opto-ISO-B_Silkscreen.gbo`` - Siebdruck Unterseite
+.. note::
+   
+   Alle Gerber-Dateien entsprechen dem RS-274X Standard und sind mit gängigen CAM-Systemen kompatibel.
 
-* **Weitere Lagen:**
-  
-  * ``4CH-Opto-ISO-Edge_Cuts.gm1`` - Platinenkonturen
-  * ``4CH-Opto-ISO.drl`` - Bohrdatei
+Bohrdateien
+~~~~~~~~~~
+
+* **Format**: Excellon
+* **Einheiten**: Metrisch (mm)
+* **Koordinaten**: Absolut
 
 Dokumentation
 ~~~~~~~~~~~~
 
-* **Schaltplan PDF:** ``pdf/4CH-Opto-ISO_schematic.pdf``
-* **Layout PDF:** ``pdf/4CH-Opto-ISO_pcb.pdf``
-* **3D-Modell:** ``3d/4CH-Opto-ISO.step``
+* **PDF-Schaltplan**: Vollständiger Schaltplan
+* **PDF-Assembly**: Bestückungsplan
+* **PDF-Fab**: Fertigungszeichnung
 
 Bill of Materials (BOM)
 ~~~~~~~~~~~~~~~~~~~~~~
 
-* **Interaktive HTML-BOM:** ``bom/4CH-Opto-ISO_ibom.html``
-* **CSV-BOM:** [wird bei Bedarf generiert]
+* **CSV-Format**: Maschinell lesbar
+* **HTML-Format**: Interaktive BOM mit Bauteilpositionen
+* **Herstellerinformationen**: Bestellnummern und Spezifikationen
 
 Fertigungsparameter
 ------------------
@@ -60,42 +59,64 @@ Fertigungsparameter
 PCB-Spezifikationen
 ~~~~~~~~~~~~~~~~~~
 
-.. list-table::
+.. list-table:: PCB-Parameter
+   :widths: 40 30 30
    :header-rows: 1
-   :widths: 30 70
 
    * - Parameter
      - Wert
+     - Bemerkung
    * - Lagenanzahl
      - 2
-   * - PCB-Dicke
-     - 1.6 mm
+     - Standard Doppelseitig
+   * - Platinenstärke
+     - 1.6mm
+     - Standard FR4
    * - Kupferdicke
-     - 35 μm (1 oz)
-   * - Minimale Leiterbahnbreite
-     - 0.2 mm
-   * - Minimaler Via-Durchmesser
-     - 0.3 mm
+     - 35μm
+     - 1oz Standard
+   * - Min. Leiterbahnbreite
+     - 0.2mm
+     - 8mil
+   * - Min. Via-Durchmesser
+     - 0.3mm
+     - 0.6mm Außendurchmesser
+   * - Min. Bohrung
+     - 0.2mm
+     - Mechanische Bohrung
    * - Oberflächenbehandlung
-     - HASL oder ENIG
+     - HASL
+     - Bleifreie Option verfügbar
 
 Lötparameter
 ~~~~~~~~~~~
 
-.. list-table::
+.. list-table:: Löt-Spezifikationen
+   :widths: 40 30 30
    :header-rows: 1
-   :widths: 30 70
 
    * - Parameter
      - Wert
-   * - Löttemperatur
-     - 240-260°C
-   * - Vorheiztemperatur
-     - 150-180°C
-   * - Lötzeit
-     - 3-5 Sekunden
-   * - Lottyp
-     - SAC305 (bleifreies Lot)
+     - Bemerkung
+   * - Reflow-Profil
+     - SAC305
+     - Bleifreies Lot
+   * - Peak-Temperatur
+     - 245°C
+     - ±5°C
+   * - Verweilzeit über 217°C
+     - 45-90s
+     - Kritisch für Lötqualität
+   * - Aufheizrate
+     - 1-3°C/s
+     - Gleichmäßige Erwärmung
+   * - Abkühlrate
+     - <4°C/s
+     - Vermeidung von Rissen
+
+.. warning::
+   
+   Temperaturprofile müssen genau eingehalten werden, um Lötfehler zu vermeiden.
 
 Qualitätskontrolle
 -----------------
@@ -103,56 +124,59 @@ Qualitätskontrolle
 Automatisierte Prüfungen
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-* **DRC (Design Rule Check)** - Integriert in KiCad-CLI
-* **ERC (Electrical Rules Check)** - Automatische Schaltplanprüfung
-* **Gerber-Verifikation** - Visuelle Kontrolle der generierten Dateien
+* **AOI (Automated Optical Inspection)**: Visuelle Kontrolle
+* **ICT (In-Circuit Test)**: Elektrische Funktionsprüfung
+* **Boundary Scan**: JTAG-basierte Tests (falls verfügbar)
 
 Funktionstests
 ~~~~~~~~~~~~~
 
-* **Isolationsprüfung** - 5000V Isolationstest
-* **Kontinuitätsprüfung** - Leiterbahnkontinuität
-* **Funktionstest** - End-to-End Signalübertragung
+* **Stromaufnahme-Test**: Überprüfung der Leistungsaufnahme
+* **Funktionalitäts-Test**: Vollständige Funktionsprüfung
+* **Umgebungstest**: Tests unter verschiedenen Bedingungen
 
 Fertigungspartner
 ----------------
 
-Das Design ist kompatibel mit gängigen PCB-Herstellern:
+Empfohlene PCB-Hersteller:
 
-* **JLCPCB** - Kostengünstige Prototypen
-* **PCBWay** - Professionelle Fertigung
-* **OSH Park** - Community-orientierte Fertigung
-* **Lokale Hersteller** - Je nach Region
+* **JLCPCB**: Kostengünstige Prototypen
+* **PCBWay**: Professionelle Kleinserien
+* **Eurocircuits**: Europäische Fertigung
+* **OSH Park**: Open-Source-Hardware-freundlich
 
-.. note::
-   Laden Sie das komplette Fertigungspaket ``4CH-Opto-ISO_manufacturing.zip`` 
-   herunter und senden Sie es direkt an Ihren bevorzugten PCB-Hersteller.
+.. tip::
+   
+   Für Prototypen sind 5-10 Stück ausreichend. Für Serien ab 100 Stück sollten Kostenvergleiche durchgeführt werden.
 
 Kostenschätzung
 --------------
 
-Typische Kosten für Prototyping (Stand 2025):
-
-.. list-table::
+.. list-table:: Kostenschätzung (ungefähre Werte)
+   :widths: 30 25 25 20
    :header-rows: 1
-   :widths: 20 30 25 25
 
    * - Stückzahl
      - PCB-Kosten
-     - Bauteile
+     - Bestückung
      - Gesamt
    * - 5 Stück
-     - $15-25
-     - $10-15
-     - $25-40
+     - 2-5€
+     - 10-20€
+     - 12-25€
    * - 10 Stück
-     - $20-30
-     - $20-30
-     - $40-60
+     - 1-3€
+     - 8-15€
+     - 9-18€
    * - 100 Stück
-     - $50-80
-     - $150-200
-     - $200-280
+     - 0.5-1€
+     - 5-10€
+     - 5.5-11€
+   * - 1000 Stück
+     - 0.2-0.5€
+     - 2-5€
+     - 2.2-5.5€
 
-.. warning::
-   Preise können je nach Hersteller, Spezifikationen und aktueller Marktlage variieren.
+.. note::
+   
+   Preise variieren je nach Hersteller, Spezifikationen und aktueller Marktlage.

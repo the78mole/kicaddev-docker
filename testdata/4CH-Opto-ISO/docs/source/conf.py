@@ -3,55 +3,90 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-# -- Project information -----------------------------------------------------
+import os
+import sys
 
-project = '4CH-Opto-ISO PCB Projekt'
-author = 'the78mole'
-copyright = '2025, the78mole'
-release = '1.0'
-version = '1.0'
+# -- Project information -----------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+
+project = '4CH-Opto-ISO'
+copyright = '2024, KiCad Project Team'
+author = 'KiCad Project Team'
+release = '1.0.0'
 
 # -- General configuration ---------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
+    'myst_parser',
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
-    'sphinx.ext.githubpages',
-    'myst_parser',        # Markdown & ReStructuredText
+    'sphinx.ext.intersphinx',
 ]
 
 templates_path = ['_templates']
 exclude_patterns = []
 
+# Language settings
 language = 'de'
 
-# -- Options for HTML output ------------------------------------------------
+# -- Options for HTML output -------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+html_title = f'{project} Dokumentation'
 
-# Custom CSS
-html_css_files = [
-    'custom.css',
+# -- Options for LaTeX output ------------------------------------------------
+
+latex_engine = 'pdflatex'
+latex_elements = {
+    'papersize': 'a4paper',
+    'pointsize': '10pt',
+    'fncychap': '\\usepackage[Bjornstrup]{fncychap}',
+    'fontenc': '\\usepackage[T1]{fontenc}',
+    'inputenc': '\\usepackage[utf8]{inputenc}',
+    'babel': '\\usepackage[german]{babel}',
+    'preamble': r'''
+\usepackage{textcomp}
+\DeclareUnicodeCharacter{03BC}{\ensuremath{\mu}}
+\DeclareUnicodeCharacter{03A9}{\ensuremath{\Omega}}
+\DeclareUnicodeCharacter{03B1}{\ensuremath{\alpha}}
+\DeclareUnicodeCharacter{03B2}{\ensuremath{\beta}}
+\DeclareUnicodeCharacter{03B3}{\ensuremath{\gamma}}
+\DeclareUnicodeCharacter{03B4}{\ensuremath{\delta}}
+\DeclareUnicodeCharacter{03B5}{\ensuremath{\varepsilon}}
+\DeclareUnicodeCharacter{03B8}{\ensuremath{\theta}}
+\DeclareUnicodeCharacter{03BB}{\ensuremath{\lambda}}
+\DeclareUnicodeCharacter{03C0}{\ensuremath{\pi}}
+\DeclareUnicodeCharacter{03C1}{\ensuremath{\rho}}
+\DeclareUnicodeCharacter{03C3}{\ensuremath{\sigma}}
+\DeclareUnicodeCharacter{03C4}{\ensuremath{\tau}}
+\DeclareUnicodeCharacter{03C6}{\ensuremath{\varphi}}
+\DeclareUnicodeCharacter{03C9}{\ensuremath{\omega}}
+\DeclareUnicodeCharacter{00B0}{\ensuremath{{}^{\circ}}}
+\DeclareUnicodeCharacter{00B5}{\ensuremath{\mu}}
+\DeclareUnicodeCharacter{2126}{\ensuremath{\Omega}}
+''',
+}
+
+latex_documents = [
+    ('index', '4CH-Opto-ISO.tex', f'{project} PCB-Projekt',
+     'KiCad Project Team', 'manual'),
 ]
 
-html_theme_options = {
-    'canonical_url': '',
-    'analytics_id': '',
-    'logo_only': False,
-    'display_version': True,
-    'prev_next_buttons_location': 'bottom',
-    'style_external_links': False,
-    'vcs_pageview_mode': '',
-    'style_nav_header_background': '#2980b9',
-    # Toc options
-    'collapse_navigation': True,
-    'sticky_navigation': True,
-    'navigation_depth': 4,
-    'includehidden': True,
-    'titles_only': False
-}
+# -- MyST Parser configuration -----------------------------------------------
+
+myst_enable_extensions = [
+    "colon_fence",
+    "deflist",
+    "html_image",
+    "html_admonition",
+    "replacements",
+    "smartquotes",
+    "tasklist",
+]
 
 # Source file suffixes
 source_suffix = {

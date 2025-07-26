@@ -1,11 +1,10 @@
-# Makefile für Sphinx Dokumentation
+# Makefile for Sphinx documentation
 
-# You can set these variables from the command line, and also
-# from the environment for the first two.
-SPHINXOPTS    ?=
-SPHINXBUILD  ?= sphinx-build
-SOURCEDIR    = source
-BUILDDIR     = build
+# You can set these variables from the command line.
+SPHINXOPTS    =
+SPHINXBUILD   = sphinx-build
+SOURCEDIR     = source
+BUILDDIR      = build
 
 # Put it first so that "make" without argument is like "make help".
 help:
@@ -18,15 +17,12 @@ help:
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-# Lokale Entwicklung mit Auto-Rebuild
+# Custom targets
+clean:
+	rm -rf $(BUILDDIR)/*
+
 livehtml:
-	sphinx-autobuild "$(SOURCEDIR)" "$(BUILDDIR)/html" $(SPHINXOPTS) $(O)
+	sphinx-autobuild $(SOURCEDIR) $(BUILDDIR)/html
 
-# Dokumentation vollständig neu erstellen
-clean-build:
-	rm -rf "$(BUILDDIR)"
-	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-
-# PDF-Generation (falls LaTeX installiert ist)
-latexpdf:
-	@$(SPHINXBUILD) -M latexpdf "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+pdf: latexpdf
+	@echo "PDF documentation built in $(BUILDDIR)/latex/"

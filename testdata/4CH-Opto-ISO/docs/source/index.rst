@@ -1,27 +1,53 @@
-4CH-Opto-ISO PCB Projekt Dokumentation
-=======================================
+4CH-Opto-ISO PCB-Projekt
+============================
 
-Willkommen zur Dokumentation des 4CH-Opto-ISO PCB Projekts - einem 4-Kanal Opto-Isolator Board.
-
-.. image:: https://github.com/the78mole/kicaddev-docker/raw/main/4CH-Opto-Iso/img/4CH-Opto-Iso-3D-PCB.png
-   :alt: 3D Ansicht der PCB
-   :align: center
-   :width: 600px
-
-Dieses Projekt ist Teil der KiCad-CLI Docker-Entwicklungsumgebung und dient als Beispiel für die 
-automatisierte PCB-Produktion mit KiCad.
+Willkommen zur technischen Dokumentation des **4CH-Opto-ISO** PCB-Projekts.
 
 .. toctree::
    :maxdepth: 2
    :caption: Inhalt:
+   :numbered:
 
    introduction
-   technical-specs
+   technical-specs  
    manufacturing
    usage
 
-Indices und Tables
-==================
+Übersicht
+=========
+
+Dieses Dokument beschreibt das 4CH-Opto-ISO PCB-Design, einschließlich:
+
+* **Schaltplan und Layout** - Technische Details des PCB-Designs
+* **Spezifikationen** - Elektrische und mechanische Eigenschaften  
+* **Fertigung** - Produktionsdateien und Herstellungsanweisungen
+* **Verwendung** - Installation und Betriebsanleitung
+
+Projektdateien
+==============
+
+Die wichtigsten Projektdateien:
+
+* `4CH-Opto-ISO.kicad_pro` - KiCad Projektdatei
+* `4CH-Opto-ISO.kicad_sch` - Schaltplan
+* `4CH-Opto-ISO.kicad_pcb` - PCB Layout
+* `production/` - Fertigungsdateien (Gerber, Drill, BOM)
+* `docs/` - Diese Dokumentation
+
+Quick Start
+===========
+
+.. note::
+   
+   Dieses Projekt wurde mit KiCad 9.0+ entwickelt. Stellen Sie sicher, dass Sie eine kompatible Version verwenden.
+
+1. **Projekt öffnen**: Öffnen Sie `4CH-Opto-ISO.kicad_pro` in KiCad
+2. **Schaltplan prüfen**: Überprüfen Sie den Schaltplan auf Vollständigkeit
+3. **PCB Layout**: Kontrollieren Sie das PCB Layout und die Routing-Regeln
+4. **Produktion**: Generieren Sie die Fertigungsdateien bei Bedarf
+
+Indizes und Tabellen
+====================
 
 * :ref:`genindex`
 * :ref:`modindex`

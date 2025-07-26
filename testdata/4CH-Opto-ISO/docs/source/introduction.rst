@@ -1,53 +1,72 @@
 Einführung
 ==========
 
-Das 4CH-Opto-ISO ist ein 4-Kanal Opto-Isolator Board, das als Teil der KiCad-CLI Docker-Entwicklungsumgebung 
-entwickelt wurde. Es dient sowohl als funktionales elektronisches Bauteil als auch als Demonstrationsprojekt 
-für automatisierte PCB-Produktionsprozesse.
-
-Was ist ein Opto-Isolator?
---------------------------
-
-Ein Opto-Isolator (auch Optokoppler genannt) ist ein elektronisches Bauteil, das eine galvanische Trennung 
-zwischen zwei Schaltungsteilen ermöglicht. Die Signalübertragung erfolgt über Licht, wodurch eine vollständige 
-elektrische Isolation zwischen Eingang und Ausgang gewährleistet wird.
-
-**Hauptvorteile:**
-
-* Galvanische Trennung zwischen Schaltungsteilen
-* Schutz vor Spannungsüberschlägen
-* Reduzierung von Masseschleifen
-* Erhöhte Sicherheit bei Hochspannungsanwendungen
+Das 4CH-Opto-ISO ist ein PCB-Design, das mit KiCad entwickelt wurde.
 
 Projektüberblick
 ---------------
 
-Das 4CH-Opto-ISO Board bietet:
+.. admonition:: Projektstatus
+   :class: note
+   
+   Dieses Projekt befindet sich in aktiver Entwicklung.
 
-* **4 unabhängige Kanäle** für vielseitige Anwendungen
-* **Kompaktes Design** für einfache Integration
-* **Standard-Anschlüsse** für universelle Kompatibilität
-* **Hochwertige Opto-Isolatoren** für zuverlässige Signalübertragung
+Das 4CH-Opto-ISO PCB wurde für folgende Anwendungsbereiche entwickelt:
+
+* Elektronische Schaltungen
+* Prototyping und Entwicklung
+* Produktionsreife Designs
 
 Anwendungsgebiete
 ----------------
 
-* Industrielle Steuerungssysteme
-* Galvanische Trennung in Sensornetzwerken  
-* Schutz empfindlicher Mikrocontroller-Eingänge
-* Signalisolation in Kommunikationssystemen
-* Entwicklung und Prototyping
+Typische Einsatzbereiche:
+
+* **Entwicklung**: Schnelle Prototypenerstellung
+* **Produktion**: Serienfertigung möglich
+* **Forschung**: Experimentelle Schaltungen
 
 Entwicklungsumgebung
 -------------------
 
-Dieses Projekt wurde vollständig mit der KiCad-CLI Docker-Umgebung entwickelt und demonstriert:
+Verwendete Tools:
 
-* Automatisierte Gerber-Generierung
-* PDF-Export von Schaltplänen und Layouts
-* 3D-Visualisierung
-* Interaktive HTML-BOM-Generierung
-* CI/CD-Integration für PCB-Projekte
+* **KiCad 9.0+**: PCB Design Suite
+* **Python**: Automatisierte Skripts
+* **Docker**: Containerisierte Build-Umgebung
 
-Das Projekt zeigt, wie moderne PCB-Entwicklung mit containerisierten Tools effizient 
-und reproduzierbar gestaltet werden kann.
+Dateienstruktur
+===============
+
+.. code-block:: text
+
+   4CH-Opto-ISO/
+   ├── 4CH-Opto-ISO.kicad_pro     # Hauptprojektdatei
+   ├── 4CH-Opto-ISO.kicad_sch     # Schaltplan
+   ├── 4CH-Opto-ISO.kicad_pcb     # PCB Layout
+   ├── production/                   # Fertigungsdateien
+   │   ├── gerbers/                 # Gerber-Dateien
+   │   ├── drill/                   # Bohrdateien
+   │   ├── bom/                     # Stückliste
+   │   └── pdf/                     # PDF-Dokumentation
+   └── docs/                        # Diese Dokumentation
+
+Systemanforderungen
+==================
+
+**Software:**
+
+* KiCad 9.0 oder höher
+* Python 3.8+ (für Skripts)
+* Git (für Versionskontrolle)
+
+**Hardware:**
+
+* Mindestens 4GB RAM
+* 1GB freier Speicherplatz
+* Unterstützte Betriebssysteme: Windows, macOS, Linux
+
+Lizenz
+======
+
+Dieses Projekt steht unter einer Open-Source-Lizenz. Details finden Sie in der LICENSE-Datei.
