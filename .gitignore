@@ -74,3 +74,4 @@ htmlcov/
 /testdata/*.step
 /testdata/production/
 /testdata/doc/
+/testdata/4CH-Opto-ISO/docs/build
