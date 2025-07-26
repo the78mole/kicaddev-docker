@@ -69,3 +69,8 @@ htmlcov/
 *.pid
 *.seed
 *.pid.lock
+
+/testdata/*.pdf
+/testdata/*.step
+/testdata/production/
+/testdata/doc/

@@ -5,9 +5,14 @@
 A minimal containerized environment focused on KiCad CLI tools and production extensions for automated PCB manufacturing workflows. Built on Ubuntu 24.04 with KiCad 9.0 CLI tools and essential Python packages for PCB automation.
 
 [![Build Status](https://github.com/the78mole/kicaddev-docker/actions/workflows/build-check.yml/badge.svg)](https://github.com/the78mole/kicaddev-docker/actions/workflows/build-check.yml)
-[![Test Status](https://github.com/the78mole/kicaddev-docker/actions/workflows/test-precommit.yml/badge.svg)](https://github.com/the78mole/kicaddev-docker/actions/workflows/test-precommit.yml)
-[![License: MIT](https://img.shields.io/github/license/the78mole/kicaddev-docker)](LICENSE)
+[![Release Status](https://github.com/the78mole/kicaddev-docker/actions/workflows/release.yml/badge.svg)](https://github.com/the78mole/kicaddev-docker/actions/workflows/release.yml)
+![GitHub Release Date](https://img.shields.io/github/release-date/the78mole/kicaddev-docker)
+[![Version](https://img.shields.io/github/v/tag/the78mole/kicaddev-docker?label=version&sort=semver)](https://github.com/the78mole/kicaddev-docker/releases)[![License: MIT](https://img.shields.io/github/license/the78mole/kicaddev-docker)](LICENSE)
 [![KiCad Version](https://img.shields.io/badge/KiCad-9.0_CLI-blue)](https://www.kicad.org/)
+
+[![GitHub Issues](https://img.shields.io/github/issues/the78mole/kicaddev-docker?color=yellow)](https://github.com/the78mole/kicaddev-docker/issues)
+[![GitHub Stars](https://img.shields.io/github/stars/the78mole/kicaddev-docker?style=social)](https://github.com/the78mole/kicaddev-docker/stargazers)
+[![GitHub Downloads](https://img.shields.io/github/downloads/the78mole/kicaddev-docker/total?label=Downloads&color=blue)](https://github.com/the78mole/kicaddev-docker/releases)
 
 ---
 
@@ -318,13 +323,13 @@ if __name__ == "__main__":
 Test the container with a sample project:
 
 ```bash
-# Clone a test project
-git clone https://github.com/your-org/sample-kicad-project.git
-cd sample-kicad-project
+# Clone the test project
+git clone https://github.com/the78mole/4CH-Opto-Iso.git
+cd 4CH-Opto-Iso
 
 # Test production export
 docker run --rm -v $(pwd):/workspace kicaddev-cli \
-  kicad_export sample.kicad_pro
+  kicad_export 4CH-Opto-ISO.kicad_pro
 
 # Verify output
 ls -la production/
