@@ -35,6 +35,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libtiff5-dev \
     libopenjp2-7-dev \
     xvfb \
+    zip \
+    unzip \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
@@ -50,9 +52,6 @@ RUN add-apt-repository --yes ppa:kicad/kicad-9.0-releases \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Create work directory
-RUN mkdir -p /workspace
-
 # Copy KiCad export script
 COPY scripts/kicad_export.sh /usr/local/bin/kicad_export
 RUN chmod +x /usr/local/bin/kicad_export
@@ -66,11 +65,20 @@ COPY requirements.txt /tmp/requirements.txt
 RUN python3 -m pip install --no-cache-dir --break-system-packages -r /tmp/requirements.txt \
     && rm /tmp/requirements.txt
 
+# Create non-root user for better security and file permissions
+RUN groupadd -r kicad && useradd -r -g kicad -m -d /home/kicad -s /bin/bash kicad
+
+# Create work directory and set ownership
+RUN mkdir -p /workspace && chown kicad:kicad /workspace
+
 # Set working directory
 WORKDIR /workspace
 
 # Add helpful aliases for common KiCad CLI operations
 RUN echo 'alias kicad-help="echo \"Available KiCad CLI commands:\"; echo \"  kicad-cli --help\"; echo \"  kicad_export <project.kicad_pro>\"; echo \"  kicad-cli sch export pdf\"; echo \"  kicad-cli pcb export gerbers\"; echo \"  kicad-cli pcb export drill\"; echo \"  generate_interactive_bom <project.kicad_pcb>\""' >> /etc/bash.bashrc
+
+# Switch to non-root user
+USER kicad
 
 # Default command shows available KiCad CLI tools
 CMD ["kicad-cli", "--help"]

@@ -113,6 +113,7 @@ kicad_export my_project.kicad_pro
 **Generates:**
 - **Gerber files** → `production/gerbers/`
 - **Drill files** → `production/drill/`
+- **Manufacturing ZIP** → `production/project_manufacturing.zip` (ready for PCB fabrication)
 - **Schematic PDF** → `production/pdf/schematic.pdf`
 - **PCB PDF** → `production/pdf/pcb.pdf`
 - **3D STEP file** → `production/3d/project.step`
@@ -307,7 +308,7 @@ if __name__ == "__main__":
 - **Base**: Ubuntu 24.04 LTS
 - **Architecture**: linux/amd64
 - **Size**: ~6.8GB (includes KiCad, Python tools, and dependencies)
-- **User**: root (for CI/CD compatibility)
+- **User**: kicad (non-root for security and proper file permissions)
 - **Working Directory**: `/workspace`
 
 ### Included KiCad Components

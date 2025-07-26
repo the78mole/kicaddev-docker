@@ -28,6 +28,10 @@ kicad-cli pcb export gerbers --output "$output_dir/gerbers/" "${project_name}.ki
 echo "🕳️  Exporting Drill files..."
 kicad-cli pcb export drill --output "$output_dir/drill/" "${project_name}.kicad_pcb"
 
+# Create ZIP archive for manufacturing
+echo "📦 Creating manufacturing ZIP archive..."
+(cd "$output_dir" && zip -r "${project_name}_manufacturing.zip" gerbers/ drill/)
+
 # Export PDFs
 echo "📄 Exporting schematic PDF..."
 kicad-cli sch export pdf --output "$output_dir/pdf/${project_name}_schematic.pdf" "${project_name}.kicad_sch"
@@ -49,3 +53,4 @@ else
 fi
 
 echo "✅ Production data exported to $output_dir"
+echo "📦 Manufacturing ZIP: $output_dir/${project_name}_manufacturing.zip"
