@@ -1,0 +1,5 @@
+sphinx>=5.0
+myst-parser       # Markdown-Unterstützung
+sphinx-rtd-theme  # ReadTheDocs offizielles Theme
+sphinx-autobuild  # Für lokale Entwicklung
+sphinxcontrib-napoleon  # Google/NumPy style docstrings

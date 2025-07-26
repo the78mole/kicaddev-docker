@@ -10,8 +10,14 @@ fi
 # Set display
 export DISPLAY=:99
 
-# Run generate_interactive_bom with all passed arguments
-generate_interactive_bom "$@"
+# Convert relative paths to absolute paths to avoid path duplication issues
+if [ $# -gt 0 ] && [ -f "$1" ]; then
+    PCB_FILE=$(realpath "$1")
+    shift
+    generate_interactive_bom "$PCB_FILE" "$@"
+else
+    generate_interactive_bom "$@"
+fi
 RESULT=$?
 
 # Clean up if we started Xvfb

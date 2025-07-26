@@ -52,6 +52,21 @@ RUN add-apt-repository --yes ppa:kicad/kicad-9.0-releases \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Install Python packages for KiCad production extensions and documentation
+COPY requirements.txt /tmp/requirements.txt
+RUN python3 -m pip install --no-cache-dir --break-system-packages -r /tmp/requirements.txt \
+    && rm /tmp/requirements.txt
+
+# Install LaTeX for PDF documentation generation
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    texlive-latex-recommended \
+    texlive-fonts-recommended \
+    texlive-latex-extra \
+    texlive-fonts-extra \
+    latexmk \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
 # Copy KiCad export script
 COPY scripts/kicad_export.sh /usr/local/bin/kicad_export
 RUN chmod +x /usr/local/bin/kicad_export
@@ -60,10 +75,20 @@ RUN chmod +x /usr/local/bin/kicad_export
 COPY scripts/generate_ibom_headless.sh /usr/local/bin/generate_ibom_headless
 RUN chmod +x /usr/local/bin/generate_ibom_headless
 
-# Install Python packages for KiCad production extensions
-COPY requirements.txt /tmp/requirements.txt
-RUN python3 -m pip install --no-cache-dir --break-system-packages -r /tmp/requirements.txt \
-    && rm /tmp/requirements.txt
+# Copy documentation builder script
+COPY scripts/kicad_docs_build.sh /usr/local/bin/kicad_docs_build
+RUN chmod +x /usr/local/bin/kicad_docs_build
+
+# Copy PDF documentation builder script
+COPY scripts/kicad_docs_pdf.sh /usr/local/bin/kicad_docs_pdf
+RUN chmod +x /usr/local/bin/kicad_docs_pdf
+
+# Copy documentation structure initialization script
+COPY scripts/kicad_docs_init.sh /usr/local/bin/kicad_docs_init
+RUN chmod +x /usr/local/bin/kicad_docs_init
+
+# Ensure Sphinx tools are available in PATH for all users
+ENV PATH="/usr/local/bin:${PATH}"
 
 # Create non-root user for better security and file permissions
 RUN groupadd -r kicad && useradd -r -g kicad -m -d /home/kicad -s /bin/bash kicad
@@ -74,8 +99,8 @@ RUN mkdir -p /workspace && chown kicad:kicad /workspace
 # Set working directory
 WORKDIR /workspace
 
-# Add helpful aliases for common KiCad CLI operations
-RUN echo 'alias kicad-help="echo \"Available KiCad CLI commands:\"; echo \"  kicad-cli --help\"; echo \"  kicad_export <project.kicad_pro>\"; echo \"  kicad-cli sch export pdf\"; echo \"  kicad-cli pcb export gerbers\"; echo \"  kicad-cli pcb export drill\"; echo \"  generate_interactive_bom <project.kicad_pcb>\""' >> /etc/bash.bashrc
+# Add helpful aliases for common KiCad CLI operations and documentation
+RUN echo 'alias kicad-help="echo \"Available KiCad CLI commands:\"; echo \"  kicad-cli --help\"; echo \"  kicad_export <project.kicad_pro>\"; echo \"  kicad-cli sch export pdf\"; echo \"  kicad-cli pcb export gerbers\"; echo \"  kicad-cli pcb export drill\"; echo \"  generate_ibom_headless <project.kicad_pcb>\"; echo \"\"; echo \"Documentation tools:\"; echo \"  kicad_docs_init [project_dir]   # Create docs structure\"; echo \"  kicad_docs_build [project_dir]  # HTML docs\"; echo \"  kicad_docs_pdf [project_dir]    # PDF docs\"; echo \"  sphinx-build -b html source build/html\"; echo \"  sphinx-build -b latex source build/latex\"; echo \"  sphinx-autobuild source build/html\"; echo \"  make latexpdf (in docs directory)\""' >> /etc/bash.bashrc
 
 # Switch to non-root user
 USER kicad
