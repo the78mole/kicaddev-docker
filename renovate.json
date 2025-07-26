@@ -5,7 +5,6 @@
   ],
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "🔧 KiCad Development Dependencies",
-  "schedule": ["before 6am on monday"],
   "packageRules": [
     {
       "matchManagers": [
@@ -56,7 +55,9 @@
   },
   "pip_requirements": {
     "enabled": true,
-    "fileMatch": ["(^|/)requirements\\.txt$"]
+    "managerFilePatterns": [
+      "/(^|/)requirements\\.txt$/"
+    ]
   },
   "labels": [
     "dependencies"
