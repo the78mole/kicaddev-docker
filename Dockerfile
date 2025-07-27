@@ -76,6 +76,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
+# Install Ruby and AsciiDoctor tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ruby-full \
+    asciidoctor \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/* \
+ && gem install asciidoctor-pdf
+
 # Create non-root user for better security and file permissions
 RUN groupadd -r kicad && useradd -r -g kicad -m -d /home/kicad -s /bin/bash kicad
 
@@ -109,7 +117,7 @@ RUN mkdir -p /workspace && chown kicad:kicad /workspace
 WORKDIR /workspace
 
 # Add helpful aliases for common KiCad CLI operations and documentation
-RUN echo 'alias kicad-help="echo \"Available KiCad CLI commands:\"; echo \"  kicad-cli --help\"; echo \"  kicad_export <project.kicad_pro>\"; echo \"  kicad-cli sch export pdf\"; echo \"  kicad-cli pcb export gerbers\"; echo \"  kicad-cli pcb export drill\"; echo \"  generate_ibom_headless <project.kicad_pcb>\"; echo \"  pcbdraw plot <project.kicad_pcb> <output.png>\"; echo \"\"; echo \"Documentation tools:\"; echo \"  kicad_docs_init [project_dir]   # Create docs structure\"; echo \"  kicad_docs_build [project_dir]  # HTML docs\"; echo \"  kicad_docs_pdf [project_dir]    # PDF docs\"; echo \"  sphinx-build -b html source build/html\"; echo \"  sphinx-build -b latex source build/latex\"; echo \"  sphinx-autobuild source build/html\"; echo \"  make latexpdf (in docs directory)\"; echo \"\"; echo \"Development tools:\"; echo \"  node --version, npm --version   # Node.js for GitHub Actions\"; echo \"  python3 --version              # Python for automation\""' >> /etc/bash.bashrc
+RUN echo 'alias kicad-help="echo \"Available KiCad CLI commands:\"; echo \"  kicad-cli --help\"; echo \"  kicad_export <project.kicad_pro>\"; echo \"  kicad-cli sch export pdf\"; echo \"  kicad-cli pcb export gerbers\"; echo \"  kicad-cli pcb export drill\"; echo \"  generate_ibom_headless <project.kicad_pcb>\"; echo \"  pcbdraw plot <project.kicad_pcb> <output.png>\"; echo \"\"; echo \"Documentation tools:\"; echo \"  kicad_docs_init [project_dir]   # Create docs structure\"; echo \"  kicad_docs_build [project_dir]  # HTML docs\"; echo \"  kicad_docs_pdf [project_dir]    # PDF docs\"; echo \"  sphinx-build -b html source build/html\"; echo \"  sphinx-build -b latex source build/latex\"; echo \"  sphinx-autobuild source build/html\"; echo \"  make latexpdf (in docs directory)\"; echo \"  asciidoctor file.adoc           # AsciiDoc to HTML\"; echo \"  asciidoctor-pdf file.adoc       # AsciiDoc to PDF\"; echo \"\"; echo \"Development tools:\"; echo \"  node --version, npm --version   # Node.js for GitHub Actions\"; echo \"  python3 --version              # Python for automation\""' >> /etc/bash.bashrc
 
 # Switch to non-root user
 USER kicad
