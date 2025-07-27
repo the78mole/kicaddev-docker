@@ -28,6 +28,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     zlib1g-dev \
     libjpeg-dev \
+    librsvg2-bin \
+    inkscape \
     libpng-dev \
     libfreetype6-dev \
     liblcms2-dev \
@@ -67,6 +69,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
+# Create non-root user for better security and file permissions
+RUN groupadd -r kicad && useradd -r -g kicad -m -d /home/kicad -s /bin/bash kicad
+
 # Copy KiCad export script
 COPY scripts/kicad_export.sh /usr/local/bin/kicad_export
 RUN chmod +x /usr/local/bin/kicad_export
@@ -89,9 +94,6 @@ RUN chmod +x /usr/local/bin/kicad_docs_init
 
 # Ensure Sphinx tools are available in PATH for all users
 ENV PATH="/usr/local/bin:${PATH}"
-
-# Create non-root user for better security and file permissions
-RUN groupadd -r kicad && useradd -r -g kicad -m -d /home/kicad -s /bin/bash kicad
 
 # Create work directory and set ownership
 RUN mkdir -p /workspace && chown kicad:kicad /workspace

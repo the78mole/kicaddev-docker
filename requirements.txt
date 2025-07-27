@@ -5,7 +5,7 @@ reportlab==4.2.5
 
 # KiCad and PCB Tools
 kikit==1.7.2
-pcbdraw==1.0.1
+git+https://github.com/the78mole/PcbDraw.git
 
 # Interactive HTML BOM generator
 InteractiveHtmlBom==2.10.0
