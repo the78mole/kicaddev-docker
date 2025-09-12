@@ -1,4 +1,10 @@
-# 🔧 KiCad CLI Tools & Production Extensions
+# 🔧 KiCad CLI Tools & Production Extensions 🔥 ARCHIVED 🔥
+
+## 🌋 This image has been integrated into my docker-images repository
+
+You will find the most recent image in my [docker-images repository](https://github.com/the78mole/docker-images)
+
+## Legacy Information
 
 > **Docker image for KiCad command-line tools and PCB production automation**
 
